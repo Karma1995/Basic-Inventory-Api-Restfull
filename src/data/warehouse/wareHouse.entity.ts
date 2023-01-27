@@ -1,4 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  RelationId,
+} from 'typeorm';
+import { WareHouseStockManagement } from '../classifiers/wareHouseStockManagement.entity';
+import { WareHouseLotProduct } from './wareHouseLotProduct.entity';
+import { WareHouseMovement } from './wareHouseMovement.entity';
+import { WareHouseStock } from './wareHouseStock';
 
 @Entity()
 export class WareHouse {
@@ -33,7 +45,33 @@ export class WareHouse {
   })
   isActive: boolean;
   @Column({
+    name: 'bMain',
+    type: 'boolean',
+  })
+  main: boolean;
+  @RelationId((wareHouse: WareHouse) => wareHouse.typeStockManagement)
+  typeStockManagementId: number;
+
+  @ManyToOne(() => WareHouseStockManagement)
+  @JoinColumn({
     name: 'nTypeStockManagementId',
   })
-  typeStockManagementId: number;
+  typeStockManagement: WareHouseStockManagement;
+  @OneToMany(() => WareHouseLotProduct, (lot) => lot.wareHouse, {
+    cascade: true,
+  })
+  lots: WareHouseLotProduct[];
+  @OneToMany(() => WareHouseMovement, (movement) => movement.wareHouse, {
+    cascade: true,
+  })
+  movements: WareHouseMovement[];
+  @OneToMany(() => WareHouseStock, (stock) => stock.wareHouse, {
+    cascade: true,
+  })
+  stocks: WareHouseStock[];
+
+  // @OneToMany(() => WareHouseMovementGroup, (group) => group.wareHouse, {
+  //   cascade: true,
+  // })
+  // groups: WareHouseMovementGroup[];
 }

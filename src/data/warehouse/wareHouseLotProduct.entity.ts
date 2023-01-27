@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  RelationId,
+} from 'typeorm';
+import { WareHouse } from './wareHouse.entity';
 
 @Entity()
 export class WareHouseLotProduct {
@@ -13,6 +21,13 @@ export class WareHouseLotProduct {
     scale: 2,
   })
   initialCount: number;
+  @Column({
+    name: 'nLastCount',
+    type: 'decimal',
+    precision: 12,
+    scale: 2,
+  })
+  lastCount: number;
   @Column({
     name: 'nCurrentCount',
     type: 'decimal',
@@ -64,8 +79,13 @@ export class WareHouseLotProduct {
     name: 'nUnitMeasuramentId',
   })
   unitMeasuramentId: number;
-  @Column({
+
+  @RelationId((lot: WareHouseLotProduct) => lot.wareHouse)
+  wareHouseId: number;
+
+  @ManyToOne(() => WareHouse, (wareHouse) => wareHouse.lots)
+  @JoinColumn({
     name: 'nWareHouseId',
   })
-  wareHouseId: number;
+  wareHouse: WareHouse;
 }

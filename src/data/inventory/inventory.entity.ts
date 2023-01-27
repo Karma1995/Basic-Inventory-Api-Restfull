@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+import { InventoryDetail } from './inventoryDetail.entity';
 
 @Entity()
 export class Inventory {
@@ -47,4 +54,9 @@ export class Inventory {
     scale: 2,
   })
   totalValueRemoved: number;
+
+  @OneToMany(() => InventoryDetail, (d) => d.inventory, {
+    cascade: true,
+  })
+  details: InventoryDetail[];
 }

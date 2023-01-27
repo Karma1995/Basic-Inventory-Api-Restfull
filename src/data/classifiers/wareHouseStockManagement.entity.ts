@@ -15,4 +15,9 @@ export class WareHouseStockManagement {
     type: 'bool',
   })
   isActive: boolean;
+
+  static values = {
+    FIFO: 1,
+    LIFO: 2,
+  };
 }

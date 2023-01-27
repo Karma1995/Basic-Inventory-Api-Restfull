@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Inventory } from './inventory.entity';
 
 @Entity()
 export class InventoryDetail {
@@ -56,4 +63,9 @@ export class InventoryDetail {
     scale: 2,
   })
   subTotalValueRemoved: number;
+  @ManyToOne(() => Inventory)
+  @JoinColumn({
+    name: 'nInvnetoryId',
+  })
+  inventory: Inventory;
 }

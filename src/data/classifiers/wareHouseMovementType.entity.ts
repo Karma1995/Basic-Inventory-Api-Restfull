@@ -15,4 +15,11 @@ export class WareHouseMovementType {
     type: 'bool',
   })
   isActive: boolean;
+
+  public static values = {
+    INGRESO: 1,
+    RETIRO: 2,
+    TRANSFERENCIA_INGRESO: 3,
+    TRANSFERENCIA_RETIRO: 4,
+  };
 }

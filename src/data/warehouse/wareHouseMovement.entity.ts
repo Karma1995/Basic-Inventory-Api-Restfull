@@ -1,4 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  ManyToOne,
+  RelationId,
+} from 'typeorm';
+import { WareHouse } from './wareHouse.entity';
+import { WareHouseMovementType } from '../classifiers/wareHouseMovementType.entity';
 
 @Entity()
 export class WareHouseMovement {
@@ -6,6 +15,8 @@ export class WareHouseMovement {
     name: 'nWareHouseMovementId',
   })
   id: number;
+  @RelationId((movement: WareHouseMovement) => movement.type)
+  typeId: number;
   @Column({
     name: 'nBeforeCount',
     type: 'decimal',
@@ -50,12 +61,26 @@ export class WareHouseMovement {
     name: 'nProductId',
   })
   productId: number;
-  @Column({
-    name: 'nWareHouseId',
-  })
+  @RelationId((movement: WareHouseMovement) => movement.wareHouse)
   wareHouseId: number;
   @Column({
     name: 'nUnitMeasuramentId',
   })
   unitMeasuramentId: number;
+  @Column({
+    name: 'nWareHouseMovementGroupId',
+  })
+  wareHouseMovementGroupId: number;
+
+  @ManyToOne(() => WareHouseMovementType)
+  @JoinColumn({
+    name: 'nTypeId',
+  })
+  type: WareHouseMovementType;
+
+  @ManyToOne(() => WareHouse, (wareHouse) => wareHouse.movements)
+  @JoinColumn({
+    name: 'nWareHouseId',
+  })
+  wareHouse: WareHouse;
 }
